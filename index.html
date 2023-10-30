@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        table,
+        td {
+            border: 1px solid black;
+            border-collapse: collapse;
+            margin: 24px;
+            padding: 24px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Welcome to my book collection</h1>
+    <button id="add-button">Add new book</button>
+    <table>
+        <thead>
+            <tr>
+                <td>Author</td>
+                <td>Title</td>
+                <td></td>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+
+    <script>
+        function addButtonHandler() {
+            // create input fields
+            let tData1 = document.createElement("td");
+            let authorInput = document.createElement("input");
+            tData1.appendChild(authorInput);
+            let tData2 = document.createElement("td");
+            let titleInput = document.createElement("input");
+            tData2.appendChild(titleInput);
+            // create save and remove buttons
+            let tData3 = document.createElement("td");
+            let saveButton = document.createElement("button");
+            saveButton.textContent = "Save";
+            let removeButton = document.createElement("button");
+            removeButton.textContent = "Remove";
+            tData3.append(saveButton, removeButton);
+            // lastly, create a table row
+            let tRow = document.createElement("tr");
+            // add them all together
+            tRow.append(tData1, tData2, tData3);
+            tBodyElement.appendChild(tRow);
+
+            // necessary event handlers
+            saveButton.addEventListener("click", () => saveButtonHandler(tData1, tData2, tData3, authorInput, titleInput, saveButton));
+            removeButton.addEventListener("click", () => removeButtonHandler(tRow));
+        }
+
+        function saveButtonHandler(tData1, tData2, tData3, authorInput, titleInput, saveButton) {
+            // replace the input field with the text on the input field
+            let authorInfo = document.createElement("p");
+            authorInfo.textContent = authorInput.value;
+            tData1.replaceChild(authorInfo, authorInput);
+            // replace the input field with the text on the input field
+            let titleInfo = document.createElement("p");
+            titleInfo.textContent = titleInput.value;
+            tData2.replaceChild(titleInfo, titleInput)
+            // replace the save button with the edit button
+            let editButton = document.createElement("button");
+            editButton.textContent = "Edit";
+            tData3.replaceChild(editButton, saveButton)
+
+            // necessary event handlers
+            editButton.addEventListener("click", () => editButtonHandler(tData1, tData2, tData3, authorInfo, titleInfo, saveButton, editButton));
+            removeButton.addEventListener("click", () => removeButtonHandler(tRow));
+        }
+
+        function editButtonHandler(tData1, tData2, tData3, authorInfo, titleInfo, saveButton, editButton) {
+            // replace the text with an input field (keep the text)
+            let authorEdit = document.createElement("input");
+            authorEdit.value = authorInfo.textContent;
+            tData1.replaceChild(authorEdit, authorInfo);
+            // replace the text with an input field (keep the text)
+            let titleEdit = document.createElement("input");
+            titleEdit.value = titleInfo.textContent;
+            tData2.replaceChild(titleEdit, titleInfo);
+            // replace the edit button with the save button
+            tData3.replaceChild(saveButton, editButton);
+
+            // necessary event handlers
+            saveButton.addEventListener("click", () => saveButtonHandler(tData1, tData2, tData3, authorEdit, titleEdit, saveButton));
+            removeButton.addEventListener("click", () => removeButtonHandler(tRow));
+        }
+
+        function removeButtonHandler(tRow) {
+            // remove the entire row
+            tRow.remove();
+        }
+
+        // get references to existing elements
+        let addButtonElement = document.querySelector("#add-button");
+        let tBodyElement = document.querySelector("tbody");
+
+        // add event listener to the add button
+        addButtonElement.addEventListener("click", addButtonHandler);
+    </script>
+</body>
+
+</html>
